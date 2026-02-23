@@ -1,135 +1,343 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-:root {
-    --primary: #4f46e5;
-    --primary-hover: #4338ca;
-    --bg-body: #f1f5f9;
-    --bg-card: #ffffff;
-    --text-main: #0f172a;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
-    --success: #10b981;
-    --danger: #ef4444;
-    --warning: #f59e0b;
-    --purple: #8b5cf6;
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-    --mob-bg: #f8fafc;
+:root { 
+    --primary: #4f46e5; 
+    --primary-hover: #4338ca; 
+    --bg-body: #f1f5f9; 
+    --bg-card: #ffffff; 
+    --text-main: #0f172a; 
+    --text-muted: #64748b; 
+    --border: #e2e8f0; 
+    --success: #10b981; 
+    --danger: #ef4444; 
+    --warning: #f59e0b; 
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05); 
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1); 
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; outline: none; }
-body { background-color: var(--bg-body); color: var(--text-main); height: 100vh; overflow: hidden; }
-.hidden { display: none !important; }
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Inter', sans-serif; 
+    outline: none; 
+}
 
-/* --- MODERN LOGIN PARCEIRO --- */
-.login-wrap { position: fixed; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 9999; }
-.modern-login-bg { background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); }
-.login-card { padding: 40px; border-radius: 24px; width: 400px; max-width: 90%; text-align: center; }
-.modern-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); border: 1px solid rgba(255, 255, 255, 0.6); }
-.modern-card h2 { font-weight: 800; color: #1e293b; margin-bottom: 5px; font-size: 1.8rem; }
-.login-subtitle { color: #64748b; margin-bottom: 30px; font-size: 0.95rem; }
-.login-icon-wrapper { width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--primary-hover)); color: white; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 20px auto; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4); }
-.modern-btn { background: linear-gradient(135deg, var(--primary), var(--primary-hover)); padding: 15px; font-size: 1.1rem; border-radius: 12px; margin-top: 15px; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3); }
-.modern-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 20px -3px rgba(79, 70, 229, 0.4); }
+body { 
+    background-color: var(--bg-body); 
+    color: var(--text-main); 
+    height: 100vh; 
+    overflow: hidden; 
+}
 
-.input-icon-wrap { position: relative; display: flex; align-items: center; }
-.input-icon-wrap i { position: absolute; left: 15px; color: #94a3b8; font-size: 1.1rem; }
-.input-icon-wrap input { padding-left: 45px !important; border-radius: 12px !important; background: #f8fafc !important; border: 2px solid #e2e8f0 !important; }
-.input-icon-wrap input:focus { border-color: var(--primary) !important; background: white !important; }
+.hidden { 
+    display: none !important; 
+}
 
-/* ======================================================= */
-/* --- ADMIN MASTER DARK THEME (SAAS PREMIUM) --- */
-/* ======================================================= */
-.body-admin-dark { background-color: #0f172a; color: #f8fafc; }
-.admin-login-card { background: #1e293b; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid #334155; }
+/* ========================================= */
+/* TELA DE MANUTENÇÃO GLOBAL */
+/* ========================================= */
+.maintenance-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0f172a;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+    text-align: center;
+    padding: 20px;
+}
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
 
-.admin-layout { display: grid; grid-template-columns: 250px 1fr; height: 100vh; overflow: hidden; }
-.admin-sidebar { background: #1e293b; border-right: 1px solid #334155; padding: 25px; display: flex; flex-direction: column; }
-.admin-brand { font-size: 1.4rem; font-weight: 800; display: flex; align-items: center; gap: 12px; margin-bottom: 40px; color: #f8fafc; }
-.admin-menu { list-style: none; }
-.admin-menu li { padding: 12px 15px; border-radius: 8px; color: #94a3b8; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 10px; margin-bottom: 5px; transition: 0.2s; }
-.admin-menu li:hover { background: #334155; color: #f8fafc; }
-.admin-menu li.active { background: rgba(16, 185, 129, 0.1); color: #10b981; font-weight: 700; }
+/* ========================================= */
+/* LOGIN PARCEIRO */
+/* ========================================= */
+.login-wrap { 
+    position: fixed; 
+    width: 100%; 
+    height: 100%; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 9999; 
+}
+.modern-login-bg { 
+    background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%); 
+}
+.login-card { 
+    padding: 40px; 
+    border-radius: 24px; 
+    width: 400px; 
+    max-width: 90%; 
+    text-align: center; 
+}
+.modern-card { 
+    background: rgba(255, 255, 255, 0.95); 
+    backdrop-filter: blur(10px); 
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); 
+    border: 1px solid rgba(255, 255, 255, 0.6); 
+}
+.modern-card h2 { 
+    font-weight: 800; 
+    color: #1e293b; 
+    margin-bottom: 5px; 
+    font-size: 1.8rem; 
+}
+.login-subtitle { 
+    color: #64748b; 
+    margin-bottom: 30px; 
+    font-size: 0.95rem; 
+}
+.login-icon-wrapper { 
+    width: 80px; 
+    height: 80px; 
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover)); 
+    color: white; 
+    border-radius: 20px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 2.5rem; 
+    margin: 0 auto 20px auto; 
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4); 
+}
+.modern-btn { 
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover)); 
+    padding: 15px; 
+    font-size: 1.1rem; 
+    border-radius: 12px; 
+    margin-top: 15px; 
+    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3); 
+}
+.input-icon-wrap { 
+    position: relative; 
+    display: flex; 
+    align-items: center; 
+}
+.input-icon-wrap i { 
+    position: absolute; 
+    left: 15px; 
+    color: #94a3b8; 
+    font-size: 1.1rem; 
+}
+.input-icon-wrap input { 
+    padding-left: 45px !important; 
+    border-radius: 12px !important; 
+    background: #f8fafc !important; 
+    border: 2px solid #e2e8f0 !important; 
+}
 
-.admin-main { padding: 40px; overflow-y: auto; background: #0f172a; }
-.admin-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-.admin-summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
-.admin-stat-card { background: #1e293b; padding: 20px; border-radius: 16px; border: 1px solid #334155; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-.stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
-.stat-label { font-size: 0.85rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-.stat-value { font-size: 1.8rem; font-weight: 800; color: #f8fafc; margin-top: 2px; }
+/* ========================================= */
+/* DESIGN ADMIN MASTER (DARK PREMIUM SAAS) */
+/* V54: Adicionado !important em todas as classes de MODAL para sobrepor estilos antigos e corrigir telas brancas */
+/* ========================================= */
+.body-admin-dark { 
+    background-color: #0c0a09; 
+    color: #fafaf9; 
+    font-family: 'Inter', sans-serif;
+}
+.admin-bg-blur {
+    background: radial-gradient(circle at top right, #1c1917, #0c0a09);
+}
+.admin-login-card { 
+    background: rgba(28, 25, 23, 0.7); 
+    backdrop-filter: blur(16px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8); 
+    border: 1px solid #292524; 
+    border-radius: 20px;
+}
+.admin-glow-icon {
+    width: 80px; height: 80px; 
+    margin: 0 auto 20px;
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.admin-title { color: #fafaf9; font-weight: 800; font-size: 1.8rem; margin-bottom: 8px;}
+.admin-subtitle { color: #a8a29e; font-size: 0.95rem; margin-bottom: 30px;}
 
-.admin-container { background: #1e293b; border-radius: 16px; border: 1px solid #334155; overflow-x: auto; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); }
+.admin-input-premium {
+    background-color: #1c1917 !important; 
+    color: #fafaf9 !important; 
+    border: 1px solid #44403c !important; 
+    border-radius: 10px !important; 
+    padding: 14px !important; 
+    width: 100%; 
+    transition: 0.3s;
+}
+.admin-input-premium:focus {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+.admin-input-premium::placeholder { color: #78716c !important; }
+
+.admin-input-premium:-webkit-autofill,
+.admin-input-premium:-webkit-autofill:hover, 
+.admin-input-premium:-webkit-autofill:focus, 
+.admin-input-premium:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px #1c1917 inset !important;
+    -webkit-text-fill-color: #fafaf9 !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+select.admin-input-premium option {
+    background-color: #1c1917;
+    color: #fafaf9;
+}
+
+.btn-admin-primary {
+    background: #10b981; 
+    color: #0c0a09; 
+    font-weight: 800; 
+    padding: 15px; 
+    font-size: 1.1rem; 
+    margin-top: 10px; 
+    border-radius: 10px; 
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex; justify-content: center; align-items: center; gap: 10px;
+}
+.btn-admin-primary:hover { background: #059669; transform: translateY(-2px); }
+
+.admin-layout { display: grid; grid-template-columns: 260px 1fr; height: 100vh; overflow: hidden; }
+.admin-sidebar { background: #1c1917; border-right: 1px solid #292524; padding: 25px; display: flex; flex-direction: column; }
+.admin-brand { font-size: 1.3rem; font-weight: 500; display: flex; align-items: center; gap: 12px; margin-bottom: 40px; color: #fafaf9; }
+.admin-brand b { color: #10b981; font-weight: 800;}
+.brand-icon { background: #10b981; color: #0c0a09; width: 35px; height: 35px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+
+.admin-menu { list-style: none; flex: 1; }
+.admin-menu li { padding: 14px 15px; border-radius: 10px; color: #a8a29e; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; transition: 0.2s; }
+.admin-menu li:hover { background: #292524; color: #fafaf9; }
+.admin-menu li.active { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
+
+.admin-sidebar-footer { border-top: 1px solid #292524; padding-top: 20px; }
+.admin-user-info { display: flex; align-items: center; gap: 12px; }
+.admin-user-info .avatar { width: 40px; height: 40px; border-radius: 50%; background: #292524; display: flex; align-items: center; justify-content: center; color: #a8a29e; }
+.admin-user-info strong { display: block; font-size: 0.9rem; color: #fafaf9; }
+.admin-user-info span { font-size: 0.75rem; color: #78716c; }
+
+.admin-main { padding: 40px; overflow-y: auto; background: #0c0a09; display: flex; flex-direction: column; }
+.admin-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; }
+.header-titles h2 { font-size: 1.8rem; font-weight: 800; color: #fafaf9; letter-spacing: -0.5px;}
+.header-titles p { color: #a8a29e; font-size: 0.95rem; margin-top: 4px;}
+
+.btn-admin-success { background: #10b981; color: #0c0a09; font-weight: 700; padding: 12px 24px; border-radius: 10px; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+.btn-admin-success:hover { background: #059669; }
+
+.btn-admin-danger { background: transparent; color: #ef4444; border: 1px solid #ef4444; font-weight: 700; padding: 12px 24px; border-radius: 10px; cursor: pointer; transition: 0.2s; }
+.btn-admin-danger:hover { background: #fee2e2; }
+
+/* Dashboard Cards Admin */
+.admin-summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-bottom: 35px; }
+.admin-stat-card { background: #1c1917; padding: 24px; border-radius: 16px; border: 1px solid #292524; display: flex; align-items: center; gap: 20px; transition: 0.3s; }
+.admin-stat-card:hover { border-color: #44403c; transform: translateY(-2px); }
+.stat-icon { width: 55px; height: 55px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+.emerald-glow { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
+.blue-glow { background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.2); }
+.purple-glow { background: rgba(168, 85, 247, 0.1); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.2); }
+.stat-label { font-size: 0.85rem; color: #a8a29e; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;}
+.stat-value { font-size: 2rem; font-weight: 800; color: #fafaf9; margin-top: 4px; }
+
+/* Tabela Admin */
+.admin-table-container { background: #1c1917; border-radius: 16px; border: 1px solid #292524; overflow-x: auto; }
 .admin-table { width: 100%; border-collapse: collapse; min-width: 800px; }
-.admin-table th { background: #0f172a; padding: 20px; text-align: left; font-weight: 600; color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; border-bottom: 1px solid #334155; letter-spacing: 0.5px; }
-.admin-table td { padding: 18px 20px; border-bottom: 1px solid #334155; vertical-align: middle; color: #e2e8f0; }
-.admin-table tr:hover { background: #334155; }
-.admin-modal-dark { background: #1e293b; border: 1px solid #334155; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6); }
-.body-admin-dark .input-group label { color: #cbd5e1; margin-bottom: 8px; font-size: 0.85rem;}
-.admin-input { background: #0f172a !important; color: #f8fafc !important; border: 1px solid #475569 !important; border-radius: 10px !important; padding: 14px !important; width: 100%; transition: 0.2s; }
-.admin-input:focus { border-color: #10b981 !important; box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important; }
-.admin-actions-cell { display: flex; justify-content: flex-end; gap: 10px; padding-right: 10px;} 
+.admin-table th { background: #0c0a09; padding: 20px; text-align: left; font-weight: 600; color: #a8a29e; font-size: 0.8rem; border-bottom: 1px solid #292524; text-transform: uppercase; letter-spacing: 0.5px; }
+.admin-table td { padding: 18px 20px; border-bottom: 1px solid #292524; color: #e7e5e4; }
+.admin-table tr:hover td { background: rgba(255, 255, 255, 0.02); }
 
-/* --- APP PARCEIRO GERAL --- */
-.input-group { margin-bottom: 15px; text-align: left; }
+/* Modal Admin V54 - CORREÇÃO DEFINITIVA DO FUNDO BRANCO E LETRAS */
+.admin-modal-premium { background: #1c1917 !important; border: 1px solid #44403c !important; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.8) !important; }
+.admin-modal-header { border-bottom: 1px solid #292524 !important; padding-bottom: 15px; margin-bottom: 20px; }
+.admin-modal-header h2 { color: #fafaf9 !important; font-size: 1.4rem; font-weight: 700;}
+.close-admin-modal { background: #292524 !important; color: #fafaf9 !important; border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer;}
+.admin-form .input-group label { color: #d6d3d1 !important; font-size: 0.85rem;}
+.admin-modal-footer { display: flex; gap: 15px; margin-top: 30px; border-top: 1px solid #292524 !important; padding-top: 20px; }
+
+/* ========================================= */
+/* ESTILOS GERAIS DO APP (FORMULÁRIOS) */
+/* ========================================= */
+.input-group { margin-bottom: 15px; }
 .input-group label { font-size: 0.9rem; font-weight: 600; margin-bottom: 5px; display: block; color: var(--text-muted); }
-.input-group input, .input-group select, .input-group textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; background: #fff; transition: 0.2s; font-family: 'Inter', sans-serif; }
+.input-group input, .input-group select, .input-group textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; background: #fff; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 .switch-container { display: flex; justify-content: space-between; align-items: center; background: #fef2f2; padding: 12px 15px; border-radius: 8px; border: 1px solid #fca5a5; margin-bottom: 15px; }
-.switch-container .switch-label { margin: 0; color: #b91c1c; font-weight: 600; font-size: 0.9rem; flex: 1; padding-right: 10px; }
-
+.switch-container .switch-label { color: #b91c1c; font-weight: 600; font-size: 0.9rem; flex: 1; }
 .cell-logo { width: 45px; height: 45px; border-radius: 8px; object-fit: cover; border: 1px solid #334155; background: #0f172a; }
-.badge { padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-.badge-blue { background: #e0e7ff; color: var(--primary); }
+.badge { padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
 .badge-orange { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+.badge-green { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
 
-/* --- ESTRUTURA DESKTOP (SISTEMA) --- */
+/* ========================================= */
+/* ESTRUTURA DESKTOP (SISTEMA PARCEIRO) */
+/* ========================================= */
 .app-container { display: grid; grid-template-columns: 260px 1fr; height: 100%; }
 .sidebar { background: #fff; display: flex; flex-direction: column; padding: 25px; border-right: 1px solid var(--border); z-index: 100; }
-.brand { display: flex; align-items: center; gap: 10px; margin-bottom: 40px; font-size: 1.4rem; font-weight: 800; color: var(--text-main); }
-.nav-item { padding: 12px 15px; cursor: pointer; display: flex; align-items: center; gap: 12px; border-radius: 8px; margin-bottom: 5px; font-weight: 500; color: var(--text-muted); transition: 0.2s; }
-.nav-item:hover { background: #f8fafc; color: var(--primary); }
+.brand { display: flex; align-items: center; gap: 10px; margin-bottom: 30px; font-size: 1.4rem; font-weight: 800; color: var(--text-main); }
+.nav-item { padding: 12px 15px; cursor: pointer; display: flex; align-items: center; gap: 12px; border-radius: 8px; margin-bottom: 5px; font-weight: 500; color: var(--text-muted); }
 .nav-item.active { background: var(--primary); color: white; }
 .btn-logout-nav { background: #fee2e2; color: #ef4444; border: 1px solid #fca5a5; font-weight: 700; }
-.btn-logout-nav:hover { background: #ef4444 !important; color: white !important; }
-
-.main-content { padding: 40px; overflow-y: auto; height: 100vh; position: relative; }
+.main-content { padding: 40px; overflow-y: auto; height: 100vh; display:flex; flex-direction:column; }
 .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+.mobile-top-header, .extra-menu-mobile { display: none; }
 
-/* Menus Móveis (Ocultos no Desktop) */
-.mobile-top-header { display: none; }
-.extra-menu-mobile { display: none; }
+/* TOGGLE ABERTO/FECHADO */
+.status-loja-container { display: flex; align-items: center; gap: 10px; padding: 12px 15px; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 20px; cursor: pointer; transition: 0.2s; }
+.status-loja-container:hover { background: #f1f5f9; }
+.status-loja-btn { display: flex; align-items: center; gap: 8px; background: #f1f5f9; padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border); }
+.status-dot { width: 12px; height: 12px; border-radius: 50%; }
+.status-dot.aberto { background: var(--success); box-shadow: 0 0 8px var(--success); }
+.status-dot.fechado { background: var(--danger); box-shadow: 0 0 8px var(--danger); }
 
-/* --- BOTÕES GERAIS --- */
+/* ========================================= */
+/* BOTÕES GERAIS E DESPESAS */
+/* ========================================= */
 .header-actions-container { display: flex; flex-direction: column; gap: 20px; width: 100%; margin-bottom: 10px; }
 .btn-group { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 5px; }
-.btn-login { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: 0.2s; }
-.btn-primary { background: linear-gradient(135deg, #4f46e5, #4338ca); color: white; padding: 12px 24px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2); }
-.btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 12px 24px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 6px rgba(245, 158, 11, 0.2); }
-.btn-purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; padding: 12px 24px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 6px rgba(139, 92, 246, 0.2); }
-.btn-danger-outline { width: 100%; background: transparent; border: 2px solid var(--danger); color: var(--danger); padding: 10px; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.2s; }
+.btn-login { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+.btn-primary { background: linear-gradient(135deg, #4f46e5, #4338ca); color: white; padding: 12px 24px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; display: inline-flex; gap: 10px; }
+.btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 12px 24px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; display: inline-flex; gap: 10px; }
+.btn-purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; padding: 12px 24px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; display: inline-flex; gap: 10px; }
+.btn-success { background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 12px 24px; border-radius: 10px; border: none; font-weight: 600; cursor: pointer; display: inline-flex; gap: 10px; }
 
-/* --- FRENTE DE CAIXA (MESAS E PEDIDOS) --- */
+.despesa-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid var(--border); }
+.despesa-item:last-child { border-bottom: none; }
+
+/* ========================================= */
+/* CAIXA / MESAS */
+/* ========================================= */
 .caixa-section-title { font-size: 1.2rem; font-weight: 700; margin: 30px 0 15px 0; color: var(--text-main); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
 .mesas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 10px; }
-
-.new-order-btn { background: white; border: 2px dashed #cbd5e1; color: var(--text-muted); border-radius: 12px; height: 85px; cursor: pointer; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 15px; transition: 0.2s; font-weight: 700; font-size: 1rem; }
-.new-order-btn:hover { border-color: var(--primary); color: var(--primary); background: #f8fafc; }
+.new-order-btn { background: white; border: 2px dashed #cbd5e1; color: var(--text-muted); border-radius: 12px; height: 85px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 15px; font-weight: 700; font-size: 1rem; }
 .new-order-btn i { font-size: 1.6rem; color: var(--primary); margin: 0 !important; }
-
-.mesa-card { background: white; padding: 15px; border-radius: 16px; text-align: center; border: 2px solid transparent; box-shadow: var(--shadow-sm); cursor: pointer; font-weight: 700; font-size: 1.1rem; color: var(--primary); transition: 0.2s; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 120px; }
-.mesa-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--primary); }
+.mesa-card { background: white; padding: 15px; border-radius: 16px; text-align: center; border: 2px solid transparent; box-shadow: var(--shadow-sm); cursor: pointer; font-weight: 700; font-size: 1.1rem; color: var(--primary); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 120px; }
 .mesa-card i { font-size: 2rem; margin-bottom: 10px; }
 .mesa-card.livre { color: var(--success); }
 .mesa-card.ocupada { background: #fef2f2; color: var(--danger); border-color: var(--danger); }
-.pedido-card { background: white; border-radius: 12px; padding: 15px; border: 1px solid var(--border); border-left: 5px solid var(--warning); cursor: pointer; transition: 0.2s; box-shadow: var(--shadow-sm); display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.pedido-card { background: white; border-radius: 12px; padding: 15px; border: 1px solid var(--border); border-left: 5px solid var(--warning); cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .pedido-info h4 { font-size: 1rem; margin-bottom: 4px; color: var(--text-main); }
 .pedido-info span { font-size: 0.85rem; color: var(--text-muted); background: #f1f5f9; padding: 2px 8px; border-radius: 4px; }
 .pedido-total { font-weight: 700; font-size: 1.1rem; color: var(--text-main); }
 
-/* --- DASHBOARD E FINANCEIRO --- */
+/* ========================================= */
+/* DASHBOARD KPI'S E RODAPÉ */
+/* ========================================= */
 .kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-.card-minimal { background: white; padding: 25px; border-radius: 16px; border: 1px solid var(--border); display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow-sm); }
+.card-minimal { background: white; padding: 25px; border-radius: 16px; border: 1px solid var(--border); display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow-sm); position: relative; overflow: hidden;}
 .card-icon-box { width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
 .icon-blue { background: #e0e7ff; color: var(--primary); }
 .icon-green { background: #dcfce7; color: var(--success); }
@@ -137,25 +345,54 @@ body { background-color: var(--bg-body); color: var(--text-main); height: 100vh;
 .card-info h4 { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 5px; }
 .card-info strong { font-size: 1.6rem; color: var(--text-main); font-weight: 700; }
 
-/* --- PRODUTOS --- */
-.prod-card { background: white; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); position: relative; transition: 0.2s; }
+.progress-bg { width: 100%; height: 6px; background: #f1f5f9; border-radius: 10px; margin-top: 10px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 10px; }
+
+/* RODAPÉ PROFISSIONAL (V51/V52/V53) */
+.app-footer {
+    text-align: center;
+    padding: 25px 20px;
+    margin-top: auto; 
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+.app-footer a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s;
+}
+.app-footer a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+/* ========================================= */
+/* CARDS DE PRODUTOS */
+/* ========================================= */
+.prod-card { background: white; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); position: relative; }
 .prod-card.item-pausado { opacity: 0.7; filter: grayscale(50%); }
 .card-actions { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; z-index: 20; }
 .btn-action { width: 32px; height: 32px; border-radius: 8px; border: none; color: white; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
-.btn-edit { background: var(--warning); } .btn-del { background: var(--danger); }
-.badge-pausado { position: absolute; top: 0; left: 0; background: var(--danger); color: white; font-size: 0.65rem; padding: 3px 8px; font-weight: bold; border-bottom-right-radius: 8px; z-index: 20; letter-spacing: 0.5px; }
+.btn-edit { background: var(--warning); } 
+.btn-del { background: var(--danger); }
+.badge-pausado { position: absolute; top: 0; left: 0; background: var(--danger); color: white; font-size: 0.65rem; padding: 3px 8px; font-weight: bold; border-bottom-right-radius: 8px; z-index: 20; }
 
-/* --- MODAIS E PDV --- */
+/* ========================================= */
+/* MODAIS E PDV */
+/* ========================================= */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 5000; backdrop-filter: blur(3px); }
-.modal-box { background: var(--bg-card); padding: 30px; border-radius: 16px; width: 90%; max-width: 600px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); max-height: 95vh; overflow-y: auto; }
+.modal-box { background: var(--bg-card); padding: 30px; border-radius: 16px; width: 90%; max-width: 600px; max-height: 95vh; overflow-y: auto; }
 .modal-header { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; align-items: center; }
-.close-modal { background: #fee2e2; border: none; color: var(--danger); width: 35px; height: 35px; border-radius: 8px; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.search-bar { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; box-shadow: var(--shadow-sm); }
+.close-modal { background: #fee2e2; border: none; color: var(--danger); width: 35px; height: 35px; border-radius: 8px; font-size: 1.2rem; cursor: pointer; }
+.search-bar { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; }
 
 .modal-pdv-content { display: grid; grid-template-columns: 1fr 350px; gap: 24px; height: 75vh; }
 .pdv-left { display: flex; flex-direction: column; gap: 16px; height: 100%; overflow: hidden; }
 .pdv-produtos { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; overflow-y: auto; padding: 5px; padding-right: 10px; }
-.pdv-prod-card { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.pdv-prod-card { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; position: relative; }
 .pdv-prod-card img { width: 100%; height: 100px; object-fit: cover; background: #f1f5f9; }
 .pdv-prod-info { padding: 10px; text-align: left; }
 .pdv-prod-info h4 { font-size: 0.9rem; margin-bottom: 5px; line-height: 1.2; height: 2.4em; overflow: hidden; }
@@ -163,8 +400,8 @@ body { background-color: var(--bg-body); color: var(--text-main); height: 100vh;
 .btn-add-overlay { position: absolute; bottom: 10px; right: 10px; width: 28px; height: 28px; background: var(--success); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
 
 .pdv-cart { display: flex; flex-direction: column; overflow: hidden; }
-.receipt-box { background: white; border-radius: 12px; box-shadow: var(--shadow-sm); flex: 1; display: flex; flex-direction: column; border: 1px solid #e2e8f0; margin: 0; height: 100%; }
-.receipt-header { background: var(--text-main); color: white; padding: 10px 15px; font-weight: 600; letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center; }
+.receipt-box { background: white; border-radius: 12px; flex: 1; display: flex; flex-direction: column; border: 1px solid #e2e8f0; height: 100%; }
+.receipt-header { background: var(--text-main); color: white; padding: 10px 15px; font-weight: 600; display: flex; justify-content: space-between; }
 .cart-list { flex: 1; overflow-y: auto; padding: 15px; }
 .cart-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #e2e8f0; }
 .qty-ctrl { display: flex; align-items: center; gap: 5px; }
@@ -172,20 +409,27 @@ body { background-color: var(--bg-body); color: var(--text-main); height: 100vh;
 .receipt-footer { padding: 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; }
 .pdv-total { font-size: 2rem; font-weight: 800; text-align: center; color: var(--text-main); margin: 10px 0; }
 .pdv-actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-.btn-comanda { padding: 15px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; color: white; font-size: 0.9rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.btn-comanda { padding: 15px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; color: white; }
 
-/* --- OUTROS --- */
+/* ========================================= */
+/* PAGAMENTO E SELEÇÃO */
+/* ========================================= */
 .payment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
 .pay-btn { padding: 20px; border: 2px solid var(--border); border-radius: 12px; background: white; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 10px; font-weight: 600; color: var(--text-muted); }
 .pay-btn.selected { border-color: var(--primary); color: var(--primary); background: #f0f9ff; }
 .troco-box { margin-top: 15px; padding: 15px; background: #f8fafc; border-radius: 8px; border: 1px solid var(--border); }
+
 .selection-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; max-height: 320px; overflow-y: auto; padding: 5px; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 15px; }
-.selection-card { background: white; border: 2px solid transparent; border-radius: 10px; cursor: pointer; overflow: hidden; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.05); text-align: center; }
+.selection-card { background: white; border: 2px solid transparent; border-radius: 10px; cursor: pointer; position: relative; text-align: center; }
 .selection-card.selected { border-color: var(--primary); background-color: #f0f9ff; } 
-.selection-card img { width: 100%; height: 70px; object-fit: cover; background: #eee; }
-.selection-card .sel-info { padding: 8px; font-size: 0.8rem; line-height: 1.3; }
+.selection-card img { width: 100%; height: 70px; object-fit: cover; }
+.selection-card .sel-info { padding: 8px; font-size: 0.8rem; }
 .sel-check { position: absolute; top: 5px; right: 5px; width: 22px; height: 22px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; opacity: 0; }
 .selection-card.selected .sel-check { opacity: 1; }
+
+/* ========================================= */
+/* SWITCH (LIGA/DESLIGA) E TAXAS */
+/* ========================================= */
 .taxa-line, .input-taxa-wrapper { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 10px; background: white; border-radius: 8px; border: 1px solid #e2e8f0; }
 .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
 .switch input { opacity: 0; width: 0; height: 0; }
@@ -194,46 +438,35 @@ body { background-color: var(--bg-body); color: var(--text-main); height: 100vh;
 input:checked + .slider { background-color: var(--success); }
 input:checked + .slider:before { transform: translateX(24px); }
 .input-taxa-group { display: flex; align-items: center; flex: 1; margin-left: 10px; }
-.input-taxa-group input { border: none; width: 100%; outline: none; font-weight: 600; color: var(--text-main); text-align: right; }
-.qr-container { text-align: center; padding: 20px; }
+.input-taxa-group input { border: none; width: 100%; outline: none; font-weight: 600; text-align: right; }
 .qr-img { width: 200px; height: 200px; margin-bottom: 15px; border: 1px solid #eee; padding: 10px; border-radius: 10px; }
 
-/* -------------------------------------------------------------------------- */
-/* --- DESIGN MOBILE (APP NATIVO FEEL) DO SISTEMA --- */
-/* -------------------------------------------------------------------------- */
+/* ========================================= */
+/* RESPONSIVIDADE (MOBILE) */
+/* ========================================= */
 @media (max-width: 850px) {
     .app-container { display: block; padding-top: 60px; padding-bottom: 70px; }
-    
-    .sidebar { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; flex-direction: row; justify-content: space-around; padding: 5px; border-top: 1px solid var(--border); border-right: none; z-index: 1000; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
-    .brand { display: none; }
-    .sidebar > div[style*="margin-top"] { display: none; }
-    
-    .nav-item { flex-direction: column; gap: 5px; padding: 5px; font-size: 0.7rem; justify-content: center; width: 100%; border-radius: 8px; margin:0; }
+    .sidebar { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; flex-direction: row; justify-content: space-around; padding: 5px; border-top: 1px solid var(--border); z-index: 1000; }
+    .brand, .sidebar > div[style*="margin-top"], .status-loja-container { display: none; }
+    .nav-item { flex-direction: column; gap: 5px; padding: 5px; font-size: 0.7rem; justify-content: center; width: 100%; margin:0; }
     .nav-item i { font-size: 1.3rem; }
     .nav-item.active { background: transparent; color: var(--primary); font-weight: 700; }
     .nav-item.active i { background: #e0e7ff; padding: 5px 15px; border-radius: 20px; }
-
     .mobile-top-header { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 60px; background: white; border-bottom: 1px solid var(--border); padding: 0 20px; justify-content: space-between; align-items: center; z-index: 900; }
     .mobile-top-header h1 { font-size: 1.2rem; margin: 0; }
-    .btn-mais-mobile { background: none; border: none; font-size: 1.5rem; color: var(--text-main); cursor: pointer; }
-    
+    .btn-mais-mobile { background: none; border: none; font-size: 1.5rem; color: var(--text-main); }
     .main-content .header h1 { display: none; }
     .main-content { padding: 15px; height: auto; }
-
     .extra-menu-mobile.active { display: flex; flex-direction: column; position: fixed; top: 60px; right: 0; background: white; width: 200px; border-radius: 0 0 0 16px; box-shadow: -2px 5px 10px rgba(0,0,0,0.1); z-index: 1000; padding: 10px; }
     .extra-menu-mobile button, .extra-menu-mobile div { width: 100%; margin-bottom: 10px; justify-content: flex-start; }
-
     .mesas-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
     .mesa-card { height: 110px; padding: 10px; font-size: 0.9rem; }
     .new-order-btn { height: 75px; font-size: 0.9rem; gap: 10px; }
-    
     .btn-group { flex-direction: column; }
     .btn-group button { width: 100%; justify-content: center; }
     .kpi-grid { grid-template-columns: 1fr; }
-
     .modal-box { padding: 15px; width: 95%; max-height: 90vh; }
     .form-grid { grid-template-columns: 1fr; gap: 10px; }
-
     #modal-pdv .modal-box { width: 100%; height: 100%; max-width: none; border-radius: 0; padding: 10px; display: flex; flex-direction: column; }
     .modal-pdv-content { grid-template-columns: 1fr; height: calc(100vh - 70px); gap: 10px; overflow: hidden; }
     .pdv-left { height: 45vh; border-bottom: 2px solid var(--border); padding-bottom: 5px; overflow: hidden; display: flex; flex-direction: column;}
@@ -241,15 +474,14 @@ input:checked + .slider:before { transform: translateX(24px); }
     .pdv-produtos { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); padding-bottom: 10px; }
     .receipt-box { border: none; box-shadow: none; }
     
-    /* ADMIN MOBILE */
     .admin-layout { grid-template-columns: 1fr; overflow-y: auto;}
     .admin-sidebar { display: none; }
     .admin-main { padding: 15px; }
 }
 
-/* -------------------------------------------------------------------------- */
-/* IMPRESSÃO */
-/* -------------------------------------------------------------------------- */
+/* ========================================= */
+/* ESTILOS DE IMPRESSÃO (CUPOM FISCAL) */
+/* ========================================= */
 @media print {
     body * { visibility: hidden; }
     #print-area, #print-area * { visibility: visible; }
@@ -263,7 +495,7 @@ input:checked + .slider:before { transform: translateX(24px); }
 }
 
 /* ======================================================= */
-/* --- NOVO CARDÁPIO CLIENTE (ESTILO iFOOD PREMIUM) --- */
+/* CARDÁPIO CLIENTE (ESTILO iFOOD PREMIUM) */
 /* ======================================================= */
 .ifood-wrapper { background: #f7f7f7; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; display: flex; flex-direction: column; overflow-x: hidden; font-family: 'Inter', sans-serif; }
 .ifood-header { background: white; padding-bottom: 15px; position: relative; }
@@ -290,25 +522,23 @@ input:checked + .slider:before { transform: translateX(24px); }
 .ifood-item-card:hover { background: #fafafa; }
 .ifood-item-info { flex: 1; padding-right: 16px; }
 .ifood-item-info h4 { font-size: 1rem; color: #3f3e3e; margin-bottom: 6px; font-weight: 500; }
-.ifood-item-info p { font-size: 0.85rem; color: #717171; line-height: 1.4; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ifood-item-info p { font-size: 0.85rem; color: #717171; line-height: 1.3; margin-bottom: 10px; max-height: 2.6em; overflow: hidden; position: relative; }
+
 .ifood-item-price { font-weight: 600; color: #3f3e3e; display: flex; align-items: center; gap: 8px; font-size: 1rem; }
 .tag-promo { background: #ea1d2c; color: white; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; letter-spacing: 0.5px; }
 .ifood-item-card img { width: 100px; height: 100px; border-radius: 8px; object-fit: cover; border: 1px solid #f1f5f9; }
 
-/* Sacola Flutuante */
 .ifood-floating-cart { position: absolute; bottom: 0; left: 0; width: 100%; background: var(--primary); color: white; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; z-index: 10002; box-shadow: 0 -4px 10px rgba(0,0,0,0.1); }
 .ifood-floating-cart .cart-left { font-weight: 600; display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.2); padding: 5px 10px; border-radius: 6px; font-size: 0.9rem;}
 .ifood-floating-cart .cart-center { font-weight: 600; font-size: 1.05rem; }
 .ifood-floating-cart .cart-right { font-weight: 700; font-size: 1.1rem; }
 
-/* Botão de Voltar sobre a capa */
-.btn-back-sys { position: absolute; top: 15px; left: 15px; background: white; color: var(--primary); width: 40px; height: 40px; border-radius: 50%; border: none; z-index: 10001; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; }
-.btn-back-sys i { margin: 0; }
+.btn-back-sys { position: absolute; top: 15px; left: 15px; background: white; color: var(--primary); width: auto; height: 40px; padding: 0 16px; border-radius: 20px; border: none; z-index: 10001; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.95rem; cursor: pointer; }
 
-/* Modal da Sacola */
 .ifood-sacola-box { position: absolute; bottom: 0; left: 0; width: 100%; border-radius: 20px 20px 0 0; padding: 20px; padding-bottom: 30px; margin: 0; max-height: 90vh; display: flex; flex-direction: column; background: white; animation: slideUp 0.3s ease-out; max-width: 100%; }
 @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
 .ifood-sacola-lista { overflow-y: auto; flex: 1; margin: 20px 0; }
 .ifood-checkout-area { border-top: 1px solid #e2e8f0; padding-top: 20px; }
 .ifood-sacola-total { display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 800; color: #3f3e3e; margin-bottom: 20px; }
-.ifood-btn-checkout { background: var(--primary); color: white; font-size: 1.1rem; padding: 16px; border-radius: 8px; font-weight: 700; }
+.ifood-btn-checkout { background: var(--primary); color: white; font-size: 1.1rem; padding: 16px; border-radius: 8px; font-weight: 700; width: 100%; border: none; }

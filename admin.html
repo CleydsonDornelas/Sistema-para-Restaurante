@@ -9,122 +9,387 @@
 </head>
 <body class="body-admin-dark" onload="carregarDB(); renderGridClientes();">
 
-    <div id="login-admin-wrap" class="login-wrap">
+    <div id="login-admin-wrap" class="login-wrap admin-bg-blur">
         <div class="login-card admin-login-card">
-            <div style="margin-bottom:20px; font-size:3.5rem; color:#10b981;"><i class="fa-solid fa-fingerprint"></i></div>
-            <h2 style="color:#f8fafc; margin-bottom:10px; font-weight:800; font-size:1.8rem;">Acesso Master</h2>
-            <p style="color:#94a3b8; margin-bottom: 25px;">Gestão central de estabelecimentos</p>
+            <div class="admin-glow-icon">
+                <i class="fa-solid fa-fingerprint"></i>
+            </div>
+            <h2 class="admin-title">Acesso Master</h2>
+            <p class="admin-subtitle">Centro de Controle SaaS</p>
             <form onsubmit="loginMaster(event)">
                 <div class="input-group">
-                    <input type="password" id="master-user" placeholder="Senha de segurança..." style="background:#0f172a; color:#f8fafc; border: 1px solid #334155; padding:15px; font-size:1.1rem; border-radius: 12px; text-align: center; letter-spacing: 2px;">
+                    <input type="password" id="master-user" placeholder="Digite a chave de segurança..." class="admin-input-premium">
                 </div>
-                <button type="submit" class="btn-login" style="background:#10b981; color:#0f172a; font-weight:800; padding:15px; font-size:1.1rem; margin-top:10px; border-radius: 12px; transition: 0.3s;">AUTENTICAR</button>
+                <button type="submit" class="btn-admin-primary">
+                    AUTENTICAR <i class="fa-solid fa-arrow-right"></i>
+                </button>
             </form>
         </div>
     </div>
 
     <div id="painel-master" class="hidden admin-layout">
+        
         <aside class="admin-sidebar">
-            <div class="admin-brand"><i class="fa-solid fa-layer-group" style="color:#10b981;"></i> <span>GastroSys PRO</span></div>
+            <div class="admin-brand">
+                <div class="brand-icon"><i class="fa-solid fa-layer-group"></i></div>
+                <span id="nome-plataforma-menu">GastroSys <b>PRO</b></span>
+            </div>
             <ul class="admin-menu">
-                <li class="active"><i class="fa-solid fa-store"></i> Lojas Cadastradas</li>
-                </ul>
+                <li id="menu-adm-lojas" class="active" onclick="adminNav('lojas')">
+                    <i class="fa-solid fa-store"></i> Lojas Cadastradas
+                </li>
+                <li id="menu-adm-financeiro" onclick="adminNav('financeiro')">
+                    <i class="fa-solid fa-wallet"></i> Meu Financeiro (SaaS)
+                </li>
+                <li id="menu-adm-relatorios" onclick="adminNav('relatorios')">
+                    <i class="fa-solid fa-chart-line"></i> Relatórios Globais
+                </li>
+                <li id="menu-adm-config" onclick="adminNav('config')">
+                    <i class="fa-solid fa-gear"></i> Configurações
+                </li>
+            </ul>
+            
+            <div class="admin-sidebar-footer">
+                <div class="admin-user-info">
+                    <div class="avatar"><i class="fa-solid fa-user-tie"></i></div>
+                    <div>
+                        <strong>Administrador</strong>
+                        <span>Acesso Total</span>
+                    </div>
+                </div>
+            </div>
         </aside>
 
         <main class="admin-main">
-            <div class="admin-header-top">
-                <div>
-                    <h2 style="font-size: 1.8rem; font-weight: 800; color: #f8fafc;">Visão Geral</h2>
-                    <p style="color: #94a3b8;">Gerencie as contas e acessos dos seus clientes.</p>
+            
+            <div id="view-adm-lojas">
+                <div class="admin-header-top">
+                    <div class="header-titles">
+                        <h2>Gestão de Estabelecimentos</h2>
+                        <p>Controle as assinaturas e acessos dos seus clientes.</p>
+                    </div>
+                    <button class="btn-admin-success" onclick="abrirModalCliente()">
+                        <i class="fa-solid fa-plus"></i> NOVA LOJA
+                    </button>
                 </div>
-                <button class="btn-primary" style="background:#10b981; color:#0f172a; font-weight:800; padding: 12px 24px; border-radius: 10px;" onclick="abrirModalCliente()"><i class="fa-solid fa-plus"></i> Nova Loja</button>
+
+                <div class="admin-summary-grid">
+                    <div class="admin-stat-card">
+                        <div class="stat-icon emerald-glow"><i class="fa-solid fa-store"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Lojas Ativas</span>
+                            <h3 class="stat-value" id="total-lojas-adm">0</h3>
+                        </div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="stat-icon blue-glow"><i class="fa-solid fa-rocket"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Status do Sistema</span>
+                            <h3 class="stat-value">Online</h3>
+                        </div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="stat-icon purple-glow"><i class="fa-solid fa-burger"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Ramo Principal</span>
+                            <h3 class="stat-value">Mix</h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="admin-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th width="70">Logo</th>
+                                <th>Estabelecimento & Contato</th>
+                                <th>Ramo</th>
+                                <th>Mensalidade</th>
+                                <th>Acesso (Login)</th>
+                                <th style="text-align:right; padding-right: 30px;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="grid-clientes"></tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="admin-summary-grid">
-                <div class="admin-stat-card">
-                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;"><i class="fa-solid fa-store"></i></div>
-                    <div class="stat-info">
-                        <span class="stat-label">Lojas Ativas</span>
-                        <h3 class="stat-value" id="total-lojas-adm">0</h3>
+            <div id="view-adm-financeiro" class="hidden">
+                <div class="admin-header-top">
+                    <div class="header-titles">
+                        <h2>Meu Financeiro (SaaS)</h2>
+                        <p>Controle o faturamento dos clientes e os custos de infraestrutura.</p>
+                    </div>
+                    <button class="btn-admin-danger" style="border:none; background:#ef4444; color:white;" onclick="abrirModalDespesaAdmin()">
+                        <i class="fa-solid fa-file-invoice-dollar"></i> Lançar Custo (SaaS)
+                    </button>
+                </div>
+                
+                <div class="admin-summary-grid">
+                    <div class="admin-stat-card" style="border-color: #10b981;">
+                        <div class="stat-icon emerald-glow"><i class="fa-solid fa-sack-dollar"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">MRR (Faturamento Bruto)</span>
+                            <h3 class="stat-value" id="adm-mrr-total" style="color:#10b981;">R$ 0,00</h3>
+                        </div>
+                    </div>
+                    <div class="admin-stat-card" style="border-color: #ef4444;">
+                        <div class="stat-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2);"><i class="fa-solid fa-server"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Custos do Servidor (Mês)</span>
+                            <h3 class="stat-value" id="adm-custos-total" style="color:#ef4444;">- R$ 0,00</h3>
+                        </div>
+                    </div>
+                    <div class="admin-stat-card" style="border-color: #3b82f6;">
+                        <div class="stat-icon blue-glow"><i class="fa-solid fa-piggy-bank"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Lucro Líquido (SaaS)</span>
+                            <h3 class="stat-value" id="adm-lucro-total" style="color:#3b82f6;">R$ 0,00</h3>
+                        </div>
                     </div>
                 </div>
-                <div class="admin-stat-card">
-                    <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;"><i class="fa-solid fa-burger"></i></div>
-                    <div class="stat-info">
-                        <span class="stat-label">Ramo Principal</span>
-                        <h3 class="stat-value">Mix</h3>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <h3 style="color:#fafaf9; margin-bottom:15px; font-size:1.1rem;">Receitas (Assinaturas Ativas)</h3>
+                        <div class="admin-table-container">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Estabelecimento</th>
+                                        <th>Plano / Mensalidade</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="grid-financeiro-saas"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 style="color:#fafaf9; margin-bottom:15px; font-size:1.1rem;">Custos (Infraestrutura e Outros)</h3>
+                        <div class="admin-table-container">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Descrição</th>
+                                        <th>Categoria</th>
+                                        <th>Valor</th>
+                                        <th>Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="grid-despesas-saas"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="admin-container">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th width="60">Logo</th>
-                            <th>Estabelecimento</th>
-                            <th>Ramo</th>
-                            <th>Acesso (Login)</th>
-                            <th style="text-align:right; padding-right: 30px;">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="grid-clientes"></tbody>
-                </table>
+
+            <div id="view-adm-relatorios" class="hidden">
+                <div class="admin-header-top">
+                    <div class="header-titles">
+                        <h2>Relatórios Globais do Sistema</h2>
+                        <p>Visão geral do tráfego e vendas de todos os clientes.</p>
+                    </div>
+                </div>
+
+                <div class="admin-summary-grid">
+                    <div class="admin-stat-card">
+                        <div class="stat-icon purple-glow"><i class="fa-solid fa-globe"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">GMV Global (Volume Transacionado)</span>
+                            <h3 class="stat-value" id="adm-gmv-total">R$ 0,00</h3>
+                        </div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2);"><i class="fa-solid fa-receipt"></i></div>
+                        <div class="stat-info">
+                            <span class="stat-label">Total de Pedidos Processados</span>
+                            <h3 class="stat-value" id="adm-pedidos-total">0</h3>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <div id="view-adm-config" class="hidden">
+                <div class="admin-header-top">
+                    <div class="header-titles">
+                        <h2>Configurações da Plataforma</h2>
+                        <p>Personalize o sistema e gerencie as informações do Desenvolvedor.</p>
+                    </div>
+                    <button class="btn-admin-success" onclick="salvarConfigAdmin()">
+                        <i class="fa-solid fa-save"></i> Salvar Ajustes
+                    </button>
+                </div>
+
+                <div class="admin-table-container" style="padding: 30px;">
+                    <h3 style="color:#10b981; font-size:1.1rem; border-bottom:1px solid #292524; padding-bottom:10px; margin-bottom: 20px;">Informações do SaaS</h3>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label style="color:#d6d3d1">Nome da Plataforma (SaaS)</label>
+                            <input type="text" id="config-nome" class="admin-input-premium" placeholder="Ex: Meu SaaS">
+                        </div>
+                        <div class="input-group">
+                            <label style="color:#d6d3d1">Email de Suporte Global</label>
+                            <input type="text" id="config-email" class="admin-input-premium" placeholder="contato@empresa.com">
+                        </div>
+                    </div>
+                    
+                    <h3 style="color:#10b981; font-size:1.1rem; border-bottom:1px solid #292524; padding-bottom:10px; margin: 30px 0 20px 0;">Dados do Desenvolvedor (Rodapé)</h3>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label style="color:#d6d3d1">Seu Nome Completo</label>
+                            <input type="text" id="config-dev-nome" class="admin-input-premium" placeholder="Ex: João da Silva">
+                        </div>
+                        <div class="input-group">
+                            <label style="color:#d6d3d1">Texto de Exibição no Rodapé</label>
+                            <input type="text" id="config-dev-link-nome" class="admin-input-premium" placeholder="Ex: Desenvolvido por João">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label style="color:#d6d3d1"><i class="fa-brands fa-github"></i> URL do seu GitHub (Link)</label>
+                        <input type="text" id="config-github" class="admin-input-premium" placeholder="https://github.com/seu-perfil">
+                        <small style="color:#78716c; margin-top:5px; display:block;">Esse link ficará visível no rodapé de todos os clientes, divulgando o seu trabalho com o nome configurado acima.</small>
+                    </div>
+                    
+                    <h3 style="color:#fafaf9; margin: 40px 0 15px 0; font-size:1.1rem; border-bottom:1px solid #292524; padding-bottom:10px;">Segurança e Acessos</h3>
+                    
+                    <div class="switch-container" style="background:#1c1917; border-color:#44403c;">
+                        <label class="switch-label" style="color:#fafaf9;">Bloquear Novos Cadastros (Convite Only)</label>
+                        <label class="switch">
+                            <input type="checkbox" id="config-bloqueio">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="switch-container" style="background:rgba(239, 68, 68, 0.1); border-color:rgba(239, 68, 68, 0.3);">
+                        <label class="switch-label" style="color:#ef4444;">Ativar Modo Manutenção (Derruba clientes e logistas em Tempo Real)</label>
+                        <label class="switch">
+                            <input type="checkbox" id="config-manutencao">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <footer id="adm-footer" class="app-footer hidden" style="border-top: 1px solid #292524; margin-top:40px;"></footer>
+
         </main>
     </div>
 
     <div id="modal-cliente" class="modal-overlay hidden">
-        <div class="modal-box admin-modal-dark">
-            <div class="modal-header" style="border-bottom: 1px solid #334155; padding-bottom: 15px;">
-                <h2 id="modal-titulo" style="color:#f8fafc; font-size: 1.4rem;">Novo Estabelecimento</h2>
-                <button class="close-modal" style="background:#334155; color:#f8fafc; border-radius: 8px;" onclick="fecharModalCliente()"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-box admin-modal-premium">
+            <div class="modal-header admin-modal-header">
+                <h2 id="modal-titulo">Novo Estabelecimento</h2>
+                <button class="close-admin-modal" onclick="fecharModalCliente()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
-            <form onsubmit="salvarCliente(event)" style="margin-top: 15px;">
+            <form onsubmit="salvarCliente(event)" class="admin-form">
                 <input type="hidden" id="cli-id">
+                
+                <h3 style="color:#10b981; font-size:1rem; margin-bottom:15px; border-bottom:1px solid #292524; padding-bottom:5px;">Dados do Responsável</h3>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Nome do Dono / Responsável</label>
+                        <input type="text" id="cli-dono-nome" required class="admin-input-premium" placeholder="Nome completo">
+                    </div>
+                    <div class="input-group">
+                        <label>WhatsApp / Telefone</label>
+                        <input type="text" id="cli-dono-numero" required class="admin-input-premium" placeholder="(00) 00000-0000">
+                    </div>
+                </div>
+
+                <h3 style="color:#10b981; font-size:1rem; margin:20px 0 15px 0; border-bottom:1px solid #292524; padding-bottom:5px;">Dados do Estabelecimento</h3>
                 <div class="form-grid">
                     <div class="input-group">
                         <label>Nome da Loja</label>
-                        <input type="text" id="cli-nome" required class="admin-input">
+                        <input type="text" id="cli-nome" required class="admin-input-premium">
                     </div>
                     <div class="input-group">
                         <label>Ramo de Atuação</label>
-                        <select id="cli-ramo" required class="admin-input">
+                        <select id="cli-ramo" required class="admin-input-premium">
                             <option value="Hamburgueria">Hamburgueria</option>
                             <option value="Pizzaria">Pizzaria</option>
                             <option value="Restaurante">Restaurante</option>
                         </select>
                     </div>
                 </div>
+
                 <div class="form-grid">
                     <div class="input-group">
                         <label>Usuário (Login)</label>
-                        <input type="text" id="cli-login" required class="admin-input">
+                        <input type="text" id="cli-login" required class="admin-input-premium">
                     </div>
                     <div class="input-group">
                         <label>Senha do Parceiro</label>
-                        <input type="text" id="cli-pass" required class="admin-input">
+                        <input type="text" id="cli-pass" required class="admin-input-premium">
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Cor Tema do Cardápio</label>
+                        <select id="cli-cor-tema" class="admin-input-premium">
+                            <option value="laranja">Laranja (Estilo iFood)</option>
+                            <option value="vermelho">Vermelho</option>
+                            <option value="verde">Verde</option>
+                            <option value="azul">Azul</option>
+                            <option value="preto">Preto / Dark</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Mensalidade Cobrada (R$)</label>
+                        <input type="number" step="0.01" id="cli-mensalidade" required class="admin-input-premium" placeholder="Ex: 99.90">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>URL da Logo</label>
+                    <input type="text" id="cli-logo" placeholder="https://link.com/logo.png" class="admin-input-premium">
+                </div>
+                
+                <div class="admin-modal-footer">
+                    <button type="submit" class="btn-admin-success">
+                        Salvar Estabelecimento
+                    </button>
+                    <button type="button" id="btn-excluir-conta" class="btn-admin-danger hidden" onclick="excluirClienteAtual()">
+                        Excluir Conta
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-despesa-admin" class="modal-overlay hidden" style="z-index: 99999;">
+        <div class="modal-box admin-modal-premium" style="width: 500px;">
+            <div class="modal-header admin-modal-header">
+                <h2>Lançar Custos do SaaS</h2>
+                <button class="close-admin-modal" onclick="fecharModalDespesaAdmin()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form onsubmit="salvarDespesaAdmin(event)" class="admin-form">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Categoria do Custo</label>
+                        <select id="admin-desp-cat" required class="admin-input-premium">
+                            <option value="Hospedagem do Site">Hospedagem do Site na Internet</option>
+                            <option value="Domínio">Registro de Domínio</option>
+                            <option value="Manutenção">Manutenção / Banco de Dados</option>
+                            <option value="Outros">Outros Custos Tecnológicos</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Valor (R$)</label>
+                        <input type="number" id="admin-desp-valor" step="0.01" required placeholder="Ex: 150.00" class="admin-input-premium">
                     </div>
                 </div>
                 <div class="input-group">
-                    <label>Cor Tema do Cardápio</label>
-                    <select id="cli-cor-tema" class="admin-input">
-                        <option value="laranja">Laranja (Estilo iFood / Padrão)</option>
-                        <option value="vermelho">Vermelho</option>
-                        <option value="verde">Verde</option>
-                        <option value="azul">Azul</option>
-                        <option value="preto">Preto / Dark</option>
-                    </select>
+                    <label>Descrição Opcional</label>
+                    <input type="text" id="admin-desp-desc" placeholder="Ex: Mensalidade AWS / HostGator" class="admin-input-premium">
                 </div>
-                <div class="input-group">
-                    <label>URL da Logo</label>
-                    <input type="text" id="cli-logo" placeholder="https://link-da-imagem.com/logo.png" class="admin-input">
-                </div>
-                
-                <div style="display:flex; gap:10px; margin-top:30px; border-top: 1px solid #334155; padding-top: 20px;">
-                    <button type="submit" class="btn-login" style="background:#10b981; color:#0f172a; font-weight:800; border-radius: 10px;">Salvar Estabelecimento</button>
-                    <button type="button" id="btn-excluir-conta" class="btn-danger-outline hidden" style="border-color:#ef4444; color:#ef4444; border-radius: 10px;" onclick="excluirClienteAtual()">Excluir Conta</button>
-                </div>
+                <button type="submit" class="btn-admin-danger" style="width:100%; border:none; background:#ef4444; color:white; justify-content:center;">
+                    <i class="fa-solid fa-plus"></i> Registrar Custo do Sistema
+                </button>
             </form>
         </div>
     </div>
