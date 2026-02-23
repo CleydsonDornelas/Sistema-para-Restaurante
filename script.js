@@ -1,6 +1,6 @@
 // ==================== CONFIGURAÇÃO INICIAL ====================
 const MAPA_CORES = { 
-    'laranja': { c1: '#ea580c', c2: '#fb923c' }, 
+    'laranja': { c1: '#ea1d2c', c2: '#ff3e4d' }, // Ajustado para vermelho iFood por padrão
     'vermelho': { c1: '#dc2626', c2: '#f87171' }, 
     'verde': { c1: '#16a34a', c2: '#4ade80' }, 
     'preto': { c1: '#0f172a', c2: '#334155' }, 
@@ -10,12 +10,12 @@ const MAPA_CORES = {
 // TODOS OS PRODUTOS PADRÃO
 const PRODUTOS_PADRAO = {
     'Hamburgueria': [
-        { id: 1, nome: "Combo Smash Duplo", preco: 38.90, custo: 15.00, descricao: "2 Hambúrgueres de 90g, queijo cheddar, batata e refri.", pausado: false, categoria: "Combos", img: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=500", tipo: "combo" },
-        { id: 2, nome: "Smash Burger", preco: 22.00, custo: 8.50, descricao: "Pão brioche, carne 90g, queijo prato e maionese da casa.", pausado: false, categoria: "Lanches", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500", tipo: "padrao" },
-        { id: 3, nome: "X-Bacon Crocante", preco: 26.50, custo: 10.00, descricao: "Pão, hambúrguer 150g, bacon em tiras crocantes e cheddar.", pausado: false, categoria: "Lanches", img: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=500", tipo: "padrao" },
-        { id: 4, nome: "Batata Rústica", preco: 18.00, custo: 5.00, descricao: "Porção de 300g com páprica e alecrim.", pausado: false, categoria: "Porções", img: "https://images.unsplash.com/photo-1630384060421-a431e4cad84f?w=500", tipo: "padrao" },
-        { id: 5, nome: "Milkshake Morango", preco: 15.90, custo: 6.00, descricao: "Feito com sorvete artesanal e pedaços de morango.", pausado: false, categoria: "Bebidas", img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=500", tipo: "padrao" },
-        { id: 6, nome: "Refrigerante Lata", preco: 6.00, custo: 2.50, descricao: "Lata 350ml bem gelada.", pausado: false, categoria: "Bebidas", img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500", tipo: "padrao" }
+        { id: 1, nome: "Combo Smash Duplo", preco: 38.90, custo: 15.00, descricao: "2 Hambúrgueres de 90g, queijo cheddar, batata rústica média e refrigerante lata bem gelado.", pausado: false, categoria: "Combos", img: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=500", tipo: "combo" },
+        { id: 2, nome: "Smash Burger Clássico", preco: 22.00, custo: 8.50, descricao: "Pão brioche selado na manteiga, carne 90g, queijo prato derretido e maionese secreta da casa.", pausado: false, categoria: "Lanches", img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500", tipo: "padrao" },
+        { id: 3, nome: "X-Bacon Crocante Premium", preco: 26.50, custo: 10.00, descricao: "Pão artesanal, hambúrguer blend 150g, bacon em tiras super crocantes e cheddar cremoso.", pausado: false, categoria: "Lanches", img: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=500", tipo: "padrao" },
+        { id: 4, nome: "Batata Rústica com Páprica", preco: 18.00, custo: 5.00, descricao: "Porção de 300g de batata rústica frita na hora, temperada com páprica doce e alecrim.", pausado: false, categoria: "Porções", img: "https://images.unsplash.com/photo-1630384060421-a431e4cad84f?w=500", tipo: "padrao" },
+        { id: 5, nome: "Milkshake de Morango", preco: 15.90, custo: 6.00, descricao: "Feito com sorvete artesanal de creme e pedaços de morango fresco. 400ml.", pausado: false, categoria: "Bebidas", img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=500", tipo: "padrao" },
+        { id: 6, nome: "Refrigerante Lata", preco: 6.00, custo: 2.50, descricao: "Lata 350ml bem gelada. Escolha a sua marca preferida na observação.", pausado: false, categoria: "Bebidas", img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500", tipo: "padrao" }
     ],
     'Pizzaria': [ 
         { id: 10, nome: "Combo Família", preco: 89.90, custo: 35.00, descricao: "1 Pizza G + 1 Pizza Doce M + Refri 2L.", pausado: false, categoria: "Combos", img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500", tipo: "combo" },
@@ -72,13 +72,13 @@ function iniciarSistema() {
 }
 
 function carregarDB() { 
-    const dados = localStorage.getItem('GastroDB_V44') || localStorage.getItem('GastroDB_V43') || localStorage.getItem('GastroDB_V42'); 
+    const dados = localStorage.getItem('GastroDB_V45') || localStorage.getItem('GastroDB_V44') || localStorage.getItem('GastroDB_V43'); 
     if (dados) { 
         restaurantes = JSON.parse(dados); 
     } else { 
         restaurantes = [{ 
-            id: 1, nome: "Hamburgueria Demo", ramo: "Hamburgueria", login: "demo", senha: "123", 
-            logo: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png", cor1: "#ea580c", cor2: "#fb923c", 
+            id: 1, nome: "Hamburgueria Premium", ramo: "Hamburgueria", login: "demo", senha: "123", 
+            logo: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png", cor1: "#ea1d2c", cor2: "#ff3e4d", 
             produtos: JSON.parse(JSON.stringify(PRODUTOS_PADRAO['Hamburgueria'])), 
             mesas: Array.from({length: 8}, (_,i)=>({id:i+1, status:'livre', pedidos:[]})), 
             pedidosAbertos: [], vendas: [] 
@@ -86,7 +86,7 @@ function carregarDB() {
     } 
     salvarDB(); 
 }
-function salvarDB() { localStorage.setItem('GastroDB_V44', JSON.stringify(restaurantes)); }
+function salvarDB() { localStorage.setItem('GastroDB_V45', JSON.stringify(restaurantes)); }
 
 
 // ==================== ADMIN MASTER (GESTOR) ====================
@@ -102,17 +102,21 @@ function loginMaster(e) {
 function renderGridClientes() { 
     const grid = document.getElementById('grid-clientes'); 
     if(!grid) return; 
+    
+    // Atualiza Totalizadores
+    if(document.getElementById('total-lojas-adm')) {
+        document.getElementById('total-lojas-adm').innerText = restaurantes.length;
+    }
+
     grid.innerHTML = restaurantes.map(r => `
         <tr>
             <td><img src="${getImg(r.logo)}" class="cell-logo"></td>
             <td><strong style="font-size:1.1rem;">${r.nome}</strong><br><small style="color:#64748b">ID: ${r.id}</small></td>
             <td><span class="badge badge-orange">${r.ramo}</span></td>
-            <td>User: <b>${r.login}</b></td>
-            <td style="text-align:center;">
-                <div class="admin-actions-cell">
-                    <button class="btn-action btn-edit" onclick="editarCliente(${r.id})"><i class="fa-solid fa-pen"></i></button>
-                    <button class="btn-action btn-del" onclick="editarCliente(${r.id}); setTimeout(excluirClienteAtual, 200)"><i class="fa-solid fa-trash"></i></button>
-                </div>
+            <td><b>${r.login}</b></td>
+            <td class="admin-actions-cell">
+                <button class="btn-action" style="background:#3b82f6;" onclick="editarCliente(${r.id})"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn-action" style="background:#ef4444;" onclick="editarCliente(${r.id}); setTimeout(excluirClienteAtual, 200)"><i class="fa-solid fa-trash"></i></button>
             </td>
         </tr>
     `).join(''); 
@@ -175,7 +179,7 @@ function salvarCliente(e) {
 }
 
 function excluirClienteAtual() { 
-    if(confirm("Apagar estabelecimento?")) { 
+    if(confirm("Deseja realmente apagar este estabelecimento?")) { 
         const id = document.getElementById('cli-id').value; 
         restaurantes = restaurantes.filter(r => r.id != id); 
         salvarDB(); fecharModalCliente(); renderGridClientes(); 
@@ -195,7 +199,7 @@ function loginParceiro(e) {
         document.getElementById('app-parceiro').classList.remove('hidden'); 
         document.getElementById('sys-nome-rest').innerText = r.nome; 
         nav('dash'); 
-    } else { alert("Dados incorretos."); } 
+    } else { alert("Usuário ou senha incorretos."); } 
 }
 
 function logout() { window.location.href = window.location.pathname; }
@@ -220,9 +224,9 @@ function nav(page) {
     if(document.getElementById('page-title-mob')) document.getElementById('page-title-mob').innerText = titulos[page];
 
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    // AQUI OCORRE A MARCAÇÃO DA NAVEGAÇÃO
     if(document.getElementById(`nav-${page}`)) document.getElementById(`nav-${page}`).classList.add('active');
     
+    // RENDERIZAÇÃO DAS PÁGINAS
     if(page === 'dash') {
         const vendas = userLogado.vendas || [];
         const qtdVendas = vendas.length;
@@ -419,7 +423,7 @@ function abrirPDV(t, id) {
 
     if(t === 'mesa') {
         document.getElementById('box-10pct').classList.remove('hidden');
-        document.getElementById('pdv-10pct').checked = true; // Mesa já seleciona 10%
+        document.getElementById('pdv-10pct').checked = true; // Mesa seleciona 10%
         
         const mesa = userLogado.mesas.find(m => m.id === id);
         if(mesa && mesa.pedidos) carrinhoPDV = JSON.parse(JSON.stringify(mesa.pedidos));
@@ -669,7 +673,7 @@ function renderHistorico(f="") {
 }
 
 
-// ==================== CARDÁPIO CLIENTE (REFEITO & COM PEDIDO) ====================
+// ==================== CARDÁPIO CLIENTE (REFEITO - iFOOD STYLE) ====================
 function abrirQRCode() { 
     document.getElementById('modal-qrcode').classList.remove('hidden'); 
     const linkBase = window.location.href.split('?')[0]; 
@@ -682,24 +686,27 @@ function fecharQRCode() { document.getElementById('modal-qrcode').classList.add(
 function abrirCardapioMobile(isCliente = false) { 
     document.getElementById('mobile-overlay').classList.remove('hidden'); 
     document.getElementById('mobile-overlay').style.setProperty('--primary', userLogado.cor1); 
-    document.getElementById('mob-title').innerText=userLogado.nome; 
-    document.getElementById('mob-logo').src=getImg(userLogado.logo); 
+    document.getElementById('mob-title').innerText = userLogado.nome; 
+    document.getElementById('mob-logo').src = getImg(userLogado.logo); 
     
     if(isCliente) document.getElementById('btn-back-sys').classList.add('hidden'); 
     else document.getElementById('btn-back-sys').classList.remove('hidden'); 
     
     carrinhoCliente = [];
     atualizarFloatingCart();
-    renderCategoriasCliente("Todas");
+    renderCategoriasCliente("Todos");
 }
 
 function fecharCardapioMobile() { document.getElementById('mobile-overlay').classList.add('hidden'); }
 
 function renderCategoriasCliente(catSelecionada) {
     const produtosAtivos = userLogado.produtos.filter(p => !p.pausado);
-    const categoriasSet = new Set(produtosAtivos.map(p => p.categoria));
-    const categorias = ["Todas", ...Array.from(categoriasSet)];
     
+    // Pegar categorias únicas
+    const categoriasSet = new Set(produtosAtivos.map(p => p.categoria));
+    const categorias = ["Todos", ...Array.from(categoriasSet)];
+    
+    // Renderiza a barra Sticky superior
     document.getElementById('mob-categorias').innerHTML = categorias.map(c => 
         `<div class="cat-chip ${c === catSelecionada ? 'active' : ''}" onclick="renderCategoriasCliente('${c}')">${c}</div>`
     ).join('');
@@ -707,8 +714,8 @@ function renderCategoriasCliente(catSelecionada) {
     const divItens = document.getElementById('mob-body-items');
     divItens.innerHTML = "";
     
-    if (catSelecionada === "Todas") {
-        categorias.filter(c => c !== "Todas").forEach(cat => {
+    if (catSelecionada === "Todos") {
+        categorias.filter(c => c !== "Todos").forEach(cat => {
             const itensCat = produtosAtivos.filter(p => p.categoria === cat);
             if(itensCat.length > 0) {
                 divItens.innerHTML += `<div class="cat-section-title">${cat}</div>`;
@@ -722,16 +729,19 @@ function renderCategoriasCliente(catSelecionada) {
     }
 }
 
+// O novo HTML de cada item idêntico ao iFood
 function htmlItemCliente(p) {
     return `
-        <div class="item-card-modern" onclick="addCarrinhoCliente(${p.id})">
-            <div class="item-card-modern-info">
-                ${p.tipo === 'promo' ? '<span class="tag-promo-modern">PROMOÇÃO</span>' : ''}
+        <div class="ifood-item-card" onclick="addCarrinhoCliente(${p.id})">
+            <div class="ifood-item-info">
                 <h4>${p.nome}</h4>
                 ${p.descricao ? `<p>${p.descricao}</p>` : ''}
-                <b>R$ ${p.preco.toFixed(2)}</b>
+                <div class="ifood-item-price">
+                    ${p.tipo === 'promo' ? '<span class="tag-promo">PROMOÇÃO</span>' : ''}
+                    R$ ${p.preco.toFixed(2)}
+                </div>
             </div>
-            <img src="${getImg(p.img)}">
+            <img src="${getImg(p.img)}" alt="${p.nome}">
         </div>
     `;
 }
@@ -766,7 +776,7 @@ function atualizarFloatingCart() {
     let qtd = carrinhoCliente.reduce((a,b)=>a+b.qtd, 0);
     let total = carrinhoCliente.reduce((a,b)=>a+(b.preco*b.qtd), 0);
     
-    document.getElementById('cart-qtd').innerText = `${qtd} ${qtd > 1 ? 'itens' : 'item'}`;
+    document.getElementById('cart-qtd').innerText = qtd;
     document.getElementById('cart-total').innerText = `R$ ${total.toFixed(2)}`;
 }
 
@@ -790,14 +800,14 @@ function renderItensSacola() {
     
     document.getElementById('sacola-lista').innerHTML = carrinhoCliente.map(p => `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; padding-bottom:15px; border-bottom:1px solid #f1f5f9;">
-            <div style="flex:1;">
-                <h4 style="font-size:0.95rem; margin-bottom:5px;">${p.nome}</h4>
-                <b style="color:var(--primary);">R$ ${(p.preco * p.qtd).toFixed(2)}</b>
+            <div style="flex:1; padding-right:15px;">
+                <h4 style="font-size:0.95rem; margin-bottom:5px; color:#3f3e3e;">${p.nome}</h4>
+                <b style="color:#3f3e3e;">R$ ${(p.preco * p.qtd).toFixed(2)}</b>
             </div>
-            <div class="qty-ctrl" style="background:#f1f5f9; padding:5px; border-radius:8px;">
-                <button class="qty-btn" style="background:white;" onclick="alterarQtdCliente(${p.id},-1)">-</button>
-                <span style="padding:0 10px; font-weight:700;">${p.qtd}</span>
-                <button class="qty-btn" style="background:white;" onclick="alterarQtdCliente(${p.id},1)">+</button>
+            <div class="qty-ctrl" style="border: 1px solid #e2e8f0; padding:4px; border-radius:8px;">
+                <button class="qty-btn" style="background:white; color:var(--primary);" onclick="alterarQtdCliente(${p.id},-1)"><i class="fa-solid fa-minus"></i></button>
+                <span style="padding:0 10px; font-weight:700; color:#3f3e3e;">${p.qtd}</span>
+                <button class="qty-btn" style="background:white; color:var(--primary);" onclick="alterarQtdCliente(${p.id},1)"><i class="fa-solid fa-plus"></i></button>
             </div>
         </div>
     `).join('');
@@ -814,7 +824,7 @@ function toggleMesaInput() {
 
 function enviarPedidoCliente() {
     const nome = document.getElementById('cliente-nome').value.trim();
-    if(!nome) return alert("Por favor, informe seu nome!");
+    if(!nome) return alert("Por favor, informe seu nome para enviarmos o pedido!");
     
     const tipo = document.getElementById('cliente-tipo-pedido').value;
     let infoNome = nome;
@@ -824,7 +834,7 @@ function enviarPedidoCliente() {
         if(!numMesa) return alert("Por favor, informe o número da mesa!");
         infoNome = `${nome} (Mesa ${numMesa})`;
     } else {
-        infoNome = `${nome} (Delivery / Retirada)`;
+        infoNome = `${nome} (Delivery / Retirar)`;
     }
     
     let total = carrinhoCliente.reduce((a,b)=>a+(b.preco*b.qtd),0);
@@ -832,7 +842,7 @@ function enviarPedidoCliente() {
     const novoPedido = { 
         id: Date.now(), 
         cliente: infoNome, 
-        tipo: 'delivery', // Usamos delivery para cair na tela principal de pendentes
+        tipo: 'delivery', // Cai direto na lista de Pendentes do Frente de Caixa
         itens: JSON.parse(JSON.stringify(carrinhoCliente)), 
         total: total, 
         taxaEntrega: 0 
@@ -843,12 +853,12 @@ function enviarPedidoCliente() {
     
     salvarDB();
     
-    alert("Pedido enviado com sucesso! Aguarde o preparo.");
+    alert("Pedido enviado com sucesso! O restaurante já recebeu na tela do caixa.");
     carrinhoCliente = [];
     atualizarFloatingCart();
     fecharSacolaCliente();
     
-    // Se não for cliente na versão live, volta pro dash atualizado
+    // Se for o gestor testando pelo painel, volta pra aba Caixa pra ele ver o pedido cair
     if(!document.getElementById('btn-back-sys').classList.contains('hidden')) {
         nav('caixa');
     }
