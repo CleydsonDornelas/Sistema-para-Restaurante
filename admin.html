@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Master - Gestão</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body onload="iniciarAdmin()" class="admin-body">
+
+    <div id="login-admin-wrap" class="login-wrap">
+        <div class="login-card" style="border-top: 4px solid #0f172a;">
+            <div style="margin-bottom:20px; font-size:3rem; color:#0f172a;"><i class="fa-solid fa-user-shield"></i></div>
+            <h2 style="color:#333; margin-bottom:20px;">Painel Master</h2>
+            <form onsubmit="loginMaster(event)">
+                <div class="input-group"><label>Chave de Acesso</label><input type="password" id="master-user" placeholder="Senha do Admin"></div>
+                <button type="submit" class="btn-login" style="background:#0f172a;">ACESSAR GESTÃO</button>
+            </form>
+            <div style="margin-top:20px; font-size:0.85rem;"><a href="index.html" style="color:#64748b; text-decoration:none;">Ir para o Sistema de Vendas</a></div>
+        </div>
+    </div>
+
+    <div id="painel-master" class="hidden">
+        <div class="admin-content-wrapper">
+            <div class="admin-header">
+                <h2>Gestão de Estabelecimentos</h2>
+                <div style="display:flex; gap:10px;">
+                    <button class="btn-primary" onclick="abrirModalCliente()"><i class="fa-solid fa-plus"></i> Novo Cliente</button>
+                    <button class="btn-login" style="background:#ef4444; width:auto;" onclick="window.location.reload()"><i class="fa-solid fa-right-from-bracket"></i> Sair</button>
+                </div>
+            </div>
+
+            <div class="admin-container">
+                <table class="admin-table">
+                    <thead><tr><th width="80">Logo</th><th>Estabelecimento</th><th>Ramo</th><th>Acesso (Login)</th><th width="150" style="text-align:center;">Ações</th></tr></thead>
+                    <tbody id="grid-clientes"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-cliente" class="modal-overlay hidden">
+        <div class="modal-box">
+            <div class="modal-header"><h2 id="modal-titulo">Novo Estabelecimento</h2><button class="close-modal" onclick="fecharModalCliente()"><i class="fa-solid fa-xmark"></i></button></div>
+            <form onsubmit="salvarCliente(event)">
+                <input type="hidden" id="cli-id">
+                <div class="input-group"><label>Nome do Estabelecimento</label><input type="text" id="cli-nome" required></div>
+                <div class="input-group"><label>Ramo de Atividade</label>
+                    <select id="cli-ramo"><option value="Hamburgueria">Hamburgueria</option><option value="Pizzaria">Pizzaria</option><option value="Restaurante">Restaurante</option></select>
+                </div>
+                <div class="input-group"><label>Cor do Tema</label>
+                    <select id="cli-cor-tema"><option value="laranja">Laranja (Food)</option><option value="vermelho">Vermelho (Hot)</option><option value="verde">Verde (Fresh)</option><option value="preto">Preto (Premium)</option><option value="azul">Azul (Cool)</option></select>
+                </div>
+                <div class="input-group"><label>Logo URL</label><input type="text" id="cli-logo"></div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;"><div class="input-group"><label>Login</label><input type="text" id="cli-login" required></div><div class="input-group"><label>Senha</label><input type="text" id="cli-pass" required></div></div>
+                <button type="submit" class="btn-login">Salvar Dados</button>
+                <button type="button" id="btn-excluir-conta" class="btn-danger-outline hidden" style="margin-top:10px;" onclick="excluirClienteAtual()">Excluir Conta</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>function iniciarAdmin() { carregarDB(); }</script>
+</body>
+</html>
