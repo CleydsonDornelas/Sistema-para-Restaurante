@@ -46,6 +46,9 @@ let tipoVendaAtual = '';
 let idMesaAtual = 0; 
 let metodoPagamento = '';
 
+// Variáveis do Cliente (Cardápio Digital)
+let carrinhoCliente = [];
+
 // ==================== INICIALIZAÇÃO & BANCO DE DADOS ====================
 function iniciarSistema() {
     carregarDB();
@@ -53,7 +56,6 @@ function iniciarSistema() {
     const loginLoja = params.get('loja');
     
     if (loginLoja) {
-        // Modo Cliente (Cardápio via QR Code)
         const loja = restaurantes.find(r => r.login === loginLoja);
         if (loja) {
             userLogado = loja;
@@ -65,18 +67,15 @@ function iniciarSistema() {
             if(document.getElementById('login-parceiro-wrap')) document.getElementById('login-parceiro-wrap').classList.remove('hidden');
         }
     } else {
-        // Modo Sistema Parceiro
         if(document.getElementById('login-parceiro-wrap')) document.getElementById('login-parceiro-wrap').classList.remove('hidden');
     }
 }
 
 function carregarDB() { 
-    // Busca banco atual ou anterior para não perder os dados
-    const dados = localStorage.getItem('GastroDB_V42') || localStorage.getItem('GastroDB_V41'); 
+    const dados = localStorage.getItem('GastroDB_V44') || localStorage.getItem('GastroDB_V43') || localStorage.getItem('GastroDB_V42'); 
     if (dados) { 
         restaurantes = JSON.parse(dados); 
     } else { 
-        // Banco de dados inicial para testes
         restaurantes = [{ 
             id: 1, nome: "Hamburgueria Demo", ramo: "Hamburgueria", login: "demo", senha: "123", 
             logo: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png", cor1: "#ea580c", cor2: "#fb923c", 
@@ -87,7 +86,7 @@ function carregarDB() {
     } 
     salvarDB(); 
 }
-function salvarDB() { localStorage.setItem('GastroDB_V42', JSON.stringify(restaurantes)); }
+function salvarDB() { localStorage.setItem('GastroDB_V44', JSON.stringify(restaurantes)); }
 
 
 // ==================== ADMIN MASTER (GESTOR) ====================
@@ -97,9 +96,7 @@ function loginMaster(e) {
         document.getElementById('login-admin-wrap').classList.add('hidden'); 
         document.getElementById('painel-master').classList.remove('hidden'); 
         renderGridClientes(); 
-    } else { 
-        alert("Senha incorreta."); 
-    } 
+    } else { alert("Senha incorreta."); } 
 }
 
 function renderGridClientes() { 
@@ -108,9 +105,9 @@ function renderGridClientes() {
     grid.innerHTML = restaurantes.map(r => `
         <tr>
             <td><img src="${getImg(r.logo)}" class="cell-logo"></td>
-            <td><strong>${r.nome}</strong><br><small style="color:#666">ID: ${r.id}</small></td>
+            <td><strong style="font-size:1.1rem;">${r.nome}</strong><br><small style="color:#64748b">ID: ${r.id}</small></td>
             <td><span class="badge badge-orange">${r.ramo}</span></td>
-            <td>User: ${r.login}</td>
+            <td>User: <b>${r.login}</b></td>
             <td style="text-align:center;">
                 <div class="admin-actions-cell">
                     <button class="btn-action btn-edit" onclick="editarCliente(${r.id})"><i class="fa-solid fa-pen"></i></button>
@@ -223,9 +220,9 @@ function nav(page) {
     if(document.getElementById('page-title-mob')) document.getElementById('page-title-mob').innerText = titulos[page];
 
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    // AQUI OCORRE A MARCAÇÃO DA NAVEGAÇÃO
     if(document.getElementById(`nav-${page}`)) document.getElementById(`nav-${page}`).classList.add('active');
     
-    // RENDERIZAÇÃO DAS PÁGINAS
     if(page === 'dash') {
         const vendas = userLogado.vendas || [];
         const qtdVendas = vendas.length;
@@ -233,11 +230,7 @@ function nav(page) {
         
         let custoTotal = 0;
         vendas.forEach(venda => {
-            if(venda.itens) {
-                venda.itens.forEach(item => {
-                    custoTotal += (item.custo || 0) * item.qtd;
-                });
-            }
+            if(venda.itens) { venda.itens.forEach(item => { custoTotal += (item.custo || 0) * item.qtd; }); }
         });
         const lucroEstimado = totalFaturamento - custoTotal;
         const ticketMedio = qtdVendas > 0 ? (totalFaturamento / qtdVendas) : 0;
@@ -302,10 +295,10 @@ function nav(page) {
                 ${userLogado.mesas.map(m => `<div class="mesa-card ${m.status}" onclick="abrirPDV('mesa', ${m.id})"><i class="fa-solid fa-chair"></i>Mesa ${m.id}</div>`).join('')}
             </div>
             
-            <div class="caixa-section-title" style="margin-top:30px;"><i class="fa-solid fa-clipboard-list"></i> Pedidos em Aberto</div>
+            <div class="caixa-section-title" style="margin-top:30px;"><i class="fa-solid fa-clipboard-list"></i> Pedidos Pendentes</div>
             <div class="kpi-grid" id="lista-pedidos-abertos">
                 ${(!userLogado.pedidosAbertos || userLogado.pedidosAbertos.length === 0) 
-                    ? '<div style="color:#aaa;">Nenhum pedido aberto.</div>' 
+                    ? '<div style="color:#aaa;">Nenhum pedido pendente no momento.</div>' 
                     : userLogado.pedidosAbertos.map((p, idx) => `
                         <div class="pedido-card" onclick="abrirPDV('${p.tipo}', ${idx})">
                             <div class="pedido-info"><h4>${p.cliente || 'Sem Nome'}</h4><span>${p.tipo.toUpperCase()}</span></div>
@@ -316,7 +309,7 @@ function nav(page) {
 }
 
 
-// ==================== GESTÃO DE PRODUTOS (CRUD) ====================
+// ==================== GESTÃO DE PRODUTOS ====================
 function renderProdutosLista(filtro = "") { 
     const lista = userLogado.produtos.filter(p => p.nome.toLowerCase().includes(filtro.toLowerCase())); 
     document.getElementById('content-area').innerHTML = `
@@ -397,7 +390,6 @@ function salvarProduto(e) {
 
 function excluirProduto(id) { if(confirm("Apagar produto?")) { userLogado.produtos=userLogado.produtos.filter(p=>p.id!==id); salvarDB(); nav('prods'); } }
 
-// Promos & Combos
 function abrirModalPromo() { document.getElementById('modal-promo').classList.remove('hidden'); document.getElementById('grid-promo-items').innerHTML = userLogado.produtos.filter(p=>p.tipo==='padrao').map(p => `<div class="selection-card" onclick="selecionarItemPromo(this, ${p.id})"><div class="sel-check"><i class="fa-solid fa-check"></i></div><img src="${getImg(p.img)}" onerror="this.src='${IMG_DEFAULT}'"><div class="sel-info"><strong>${p.nome}</strong>R$ ${p.preco.toFixed(2)}</div></div>`).join(''); document.getElementById('selected-promo-id').value = ""; }
 function selecionarItemPromo(el, id) { document.querySelectorAll('#grid-promo-items .selection-card').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); document.getElementById('selected-promo-id').value = id; const prod = userLogado.produtos.find(x => x.id === id); if(prod) document.getElementById('promo-preco').value = prod.preco; }
 function salvarPromocao(e) { e.preventDefault(); const idProd = parseInt(document.getElementById('selected-promo-id').value); if(!idProd) return alert("Selecione um produto!"); const p = userLogado.produtos.find(x => x.id === idProd); userLogado.produtos.push({id:Date.now(), tipo:'promo', nome:p.nome+" [OFERTA]", preco:parseFloat(document.getElementById('promo-preco').value), categoria:p.categoria, img:p.img, custo: p.custo, descricao: p.descricao, pausado: false}); salvarDB(); document.getElementById('modal-promo').classList.add('hidden'); nav('prods'); }
@@ -427,7 +419,7 @@ function abrirPDV(t, id) {
 
     if(t === 'mesa') {
         document.getElementById('box-10pct').classList.remove('hidden');
-        document.getElementById('pdv-10pct').checked = true;
+        document.getElementById('pdv-10pct').checked = true; // Mesa já seleciona 10%
         
         const mesa = userLogado.mesas.find(m => m.id === id);
         if(mesa && mesa.pedidos) carrinhoPDV = JSON.parse(JSON.stringify(mesa.pedidos));
@@ -647,63 +639,6 @@ function imprimirCupom(venda, titulo = "CUPOM") {
     setTimeout(() => { window.print(); }, 100);
 }
 
-function fecharPDV() { document.getElementById('modal-pdv').classList.add('hidden'); }
-
-
-// ==================== VISÃO DO CLIENTE / CARDÁPIO / HISTÓRICO ====================
-function abrirQRCode() { 
-    document.getElementById('modal-qrcode').classList.remove('hidden'); 
-    const linkBase = window.location.href.split('?')[0]; 
-    const linkFinal = `${linkBase}?loja=${userLogado.login}`; 
-    document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(linkFinal)}`; 
-    document.getElementById('qr-link').href = linkFinal; 
-    document.getElementById('qr-link').innerText = "Link do Cliente (Clique)"; 
-}
-function fecharQRCode() { document.getElementById('modal-qrcode').classList.add('hidden'); }
-
-function abrirCardapioMobile(isCliente = false) { 
-    document.getElementById('mobile-overlay').classList.remove('hidden'); 
-    document.getElementById('mobile-overlay').style.setProperty('--brand-primary', userLogado.cor1); 
-    document.getElementById('mob-title').innerText=userLogado.nome; 
-    document.getElementById('mob-logo').src=getImg(userLogado.logo); 
-    
-    if(isCliente) document.querySelector('.btn-back-sys').classList.add('hidden'); 
-    else document.querySelector('.btn-back-sys').classList.remove('hidden'); 
-    
-    const produtosAtivos = userLogado.produtos.filter(p => !p.pausado);
-    
-    const c = produtosAtivos.filter(p => p.tipo !== 'padrao'); 
-    const i = produtosAtivos.filter(p => p.tipo === 'padrao'); 
-    
-    document.getElementById('area-combos').classList.toggle('hidden',!c.length); 
-    
-    document.getElementById('list-combos').innerHTML=c.map(p=>`
-        <div class="combo-card-mob" style="border-left:4px solid ${userLogado.cor1}">
-            <span class="tag-mob">${p.tipo}</span>
-            <img src="${getImg(p.img)}">
-            <div style="flex:1;">
-                <h4>${p.nome}</h4>
-                ${p.descricao ? `<p style="font-size:0.75rem; color:#666; margin-bottom:5px; line-height:1.2;">${p.descricao}</p>` : ''}
-                <b>R$ ${p.preco.toFixed(2)}</b>
-            </div>
-        </div>
-    `).join(''); 
-    
-    document.getElementById('list-padrao').innerHTML=i.map(p=>`
-        <div class="item-card-mob">
-            <img src="${getImg(p.img)}">
-            <div style="flex:1;">
-                <h4>${p.nome}</h4>
-                ${p.descricao ? `<p style="font-size:0.75rem; color:#666; margin-bottom:5px; line-height:1.2;">${p.descricao}</p>` : ''}
-                <small>${p.categoria}</small>
-            </div>
-            <b>R$ ${p.preco.toFixed(2)}</b>
-        </div>
-    `).join(''); 
-}
-
-function fecharCardapioMobile() { document.getElementById('mobile-overlay').classList.add('hidden'); }
-
 function renderHistorico(f="") { 
     const l=userLogado.vendas.slice().reverse().filter(v=>v.data.includes(f)||v.total.toString().includes(f)); 
     document.getElementById('content-area').innerHTML = !l.length 
@@ -731,4 +666,190 @@ function renderHistorico(f="") {
                 `).join('')}
             </tbody>
         </table>`; 
+}
+
+
+// ==================== CARDÁPIO CLIENTE (REFEITO & COM PEDIDO) ====================
+function abrirQRCode() { 
+    document.getElementById('modal-qrcode').classList.remove('hidden'); 
+    const linkBase = window.location.href.split('?')[0]; 
+    const linkFinal = `${linkBase}?loja=${userLogado.login}`; 
+    document.getElementById('qr-image').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(linkFinal)}`; 
+    document.getElementById('qr-link').href = linkFinal; 
+}
+function fecharQRCode() { document.getElementById('modal-qrcode').classList.add('hidden'); }
+
+function abrirCardapioMobile(isCliente = false) { 
+    document.getElementById('mobile-overlay').classList.remove('hidden'); 
+    document.getElementById('mobile-overlay').style.setProperty('--primary', userLogado.cor1); 
+    document.getElementById('mob-title').innerText=userLogado.nome; 
+    document.getElementById('mob-logo').src=getImg(userLogado.logo); 
+    
+    if(isCliente) document.getElementById('btn-back-sys').classList.add('hidden'); 
+    else document.getElementById('btn-back-sys').classList.remove('hidden'); 
+    
+    carrinhoCliente = [];
+    atualizarFloatingCart();
+    renderCategoriasCliente("Todas");
+}
+
+function fecharCardapioMobile() { document.getElementById('mobile-overlay').classList.add('hidden'); }
+
+function renderCategoriasCliente(catSelecionada) {
+    const produtosAtivos = userLogado.produtos.filter(p => !p.pausado);
+    const categoriasSet = new Set(produtosAtivos.map(p => p.categoria));
+    const categorias = ["Todas", ...Array.from(categoriasSet)];
+    
+    document.getElementById('mob-categorias').innerHTML = categorias.map(c => 
+        `<div class="cat-chip ${c === catSelecionada ? 'active' : ''}" onclick="renderCategoriasCliente('${c}')">${c}</div>`
+    ).join('');
+    
+    const divItens = document.getElementById('mob-body-items');
+    divItens.innerHTML = "";
+    
+    if (catSelecionada === "Todas") {
+        categorias.filter(c => c !== "Todas").forEach(cat => {
+            const itensCat = produtosAtivos.filter(p => p.categoria === cat);
+            if(itensCat.length > 0) {
+                divItens.innerHTML += `<div class="cat-section-title">${cat}</div>`;
+                divItens.innerHTML += itensCat.map(p => htmlItemCliente(p)).join('');
+            }
+        });
+    } else {
+        const itensCat = produtosAtivos.filter(p => p.categoria === catSelecionada);
+        divItens.innerHTML += `<div class="cat-section-title">${catSelecionada}</div>`;
+        divItens.innerHTML += itensCat.map(p => htmlItemCliente(p)).join('');
+    }
+}
+
+function htmlItemCliente(p) {
+    return `
+        <div class="item-card-modern" onclick="addCarrinhoCliente(${p.id})">
+            <div class="item-card-modern-info">
+                ${p.tipo === 'promo' ? '<span class="tag-promo-modern">PROMOÇÃO</span>' : ''}
+                <h4>${p.nome}</h4>
+                ${p.descricao ? `<p>${p.descricao}</p>` : ''}
+                <b>R$ ${p.preco.toFixed(2)}</b>
+            </div>
+            <img src="${getImg(p.img)}">
+        </div>
+    `;
+}
+
+function addCarrinhoCliente(id) {
+    const p = userLogado.produtos.find(x=>x.id===id);
+    const e = carrinhoCliente.find(i=>i.id===id); 
+    if(e) e.qtd++; 
+    else carrinhoCliente.push({...p, qtd:1}); 
+    
+    atualizarFloatingCart();
+}
+
+function alterarQtdCliente(id, d) {
+    const i = carrinhoCliente.find(x=>x.id===id); 
+    if(i) { 
+        i.qtd+=d; 
+        if(i.qtd<=0) carrinhoCliente = carrinhoCliente.filter(x=>x.id!==id); 
+    } 
+    atualizarFloatingCart();
+    renderItensSacola();
+}
+
+function atualizarFloatingCart() {
+    const box = document.getElementById('floating-cart');
+    if(carrinhoCliente.length === 0) {
+        box.classList.add('hidden');
+        return;
+    }
+    box.classList.remove('hidden');
+    
+    let qtd = carrinhoCliente.reduce((a,b)=>a+b.qtd, 0);
+    let total = carrinhoCliente.reduce((a,b)=>a+(b.preco*b.qtd), 0);
+    
+    document.getElementById('cart-qtd').innerText = `${qtd} ${qtd > 1 ? 'itens' : 'item'}`;
+    document.getElementById('cart-total').innerText = `R$ ${total.toFixed(2)}`;
+}
+
+function abrirSacolaCliente() {
+    document.getElementById('modal-sacola').classList.remove('hidden');
+    renderItensSacola();
+}
+
+function fecharSacolaCliente() {
+    document.getElementById('modal-sacola').classList.add('hidden');
+}
+
+function renderItensSacola() {
+    if(carrinhoCliente.length === 0) {
+        fecharSacolaCliente();
+        return;
+    }
+    
+    let total = carrinhoCliente.reduce((a,b)=>a+(b.preco*b.qtd), 0);
+    document.getElementById('sacola-total-valor').innerText = `R$ ${total.toFixed(2)}`;
+    
+    document.getElementById('sacola-lista').innerHTML = carrinhoCliente.map(p => `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; padding-bottom:15px; border-bottom:1px solid #f1f5f9;">
+            <div style="flex:1;">
+                <h4 style="font-size:0.95rem; margin-bottom:5px;">${p.nome}</h4>
+                <b style="color:var(--primary);">R$ ${(p.preco * p.qtd).toFixed(2)}</b>
+            </div>
+            <div class="qty-ctrl" style="background:#f1f5f9; padding:5px; border-radius:8px;">
+                <button class="qty-btn" style="background:white;" onclick="alterarQtdCliente(${p.id},-1)">-</button>
+                <span style="padding:0 10px; font-weight:700;">${p.qtd}</span>
+                <button class="qty-btn" style="background:white;" onclick="alterarQtdCliente(${p.id},1)">+</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function toggleMesaInput() {
+    const val = document.getElementById('cliente-tipo-pedido').value;
+    if(val === 'mesa') {
+        document.getElementById('div-numero-mesa').classList.remove('hidden');
+    } else {
+        document.getElementById('div-numero-mesa').classList.add('hidden');
+    }
+}
+
+function enviarPedidoCliente() {
+    const nome = document.getElementById('cliente-nome').value.trim();
+    if(!nome) return alert("Por favor, informe seu nome!");
+    
+    const tipo = document.getElementById('cliente-tipo-pedido').value;
+    let infoNome = nome;
+    
+    if(tipo === 'mesa') {
+        const numMesa = document.getElementById('cliente-numero-mesa').value;
+        if(!numMesa) return alert("Por favor, informe o número da mesa!");
+        infoNome = `${nome} (Mesa ${numMesa})`;
+    } else {
+        infoNome = `${nome} (Delivery / Retirada)`;
+    }
+    
+    let total = carrinhoCliente.reduce((a,b)=>a+(b.preco*b.qtd),0);
+    
+    const novoPedido = { 
+        id: Date.now(), 
+        cliente: infoNome, 
+        tipo: 'delivery', // Usamos delivery para cair na tela principal de pendentes
+        itens: JSON.parse(JSON.stringify(carrinhoCliente)), 
+        total: total, 
+        taxaEntrega: 0 
+    };
+    
+    if(!userLogado.pedidosAbertos) userLogado.pedidosAbertos = [];
+    userLogado.pedidosAbertos.push(novoPedido);
+    
+    salvarDB();
+    
+    alert("Pedido enviado com sucesso! Aguarde o preparo.");
+    carrinhoCliente = [];
+    atualizarFloatingCart();
+    fecharSacolaCliente();
+    
+    // Se não for cliente na versão live, volta pro dash atualizado
+    if(!document.getElementById('btn-back-sys').classList.contains('hidden')) {
+        nav('caixa');
+    }
 }
